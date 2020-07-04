@@ -1,26 +1,27 @@
-const Book  = require('../models/books');
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const mongoose = require('mongoose');
+const Book = require("../models/books");
 
-//POST REQUEST
-//POST A NEW BOOK TO DATABASE
-router.post('/',(req,res) => {
-    console.log("book",req.body)
-    book = new Book({
-        name:req.body.bookName,
-        author:{
-            name:req.body.authorName,
-            age:req.body.authorAge
-        },
-        genre:req.body.genre
-    });
-    
-    book.save().then((book) => {
-        res.send(book);
-    }).catch(error => {
-        res.status(500).send('Book could not be added');
+//POST: CREATE A NEW BOOK
+router.post("/", (req, res) => {
+  book = new Book({
+    name: req.body.bookName,
+    author: {
+      name: req.body.authorName,
+      age: req.body.authorAge,
+    },
+    genre: req.body.genre,
+  });
+
+  book
+    .save()
+    .then((book) => {
+      res.send(book);
     })
+    .catch((error) => {
+      res.status(500).send("Book was not stored in db");
+    });
 });
+
 
 module.exports = router;
