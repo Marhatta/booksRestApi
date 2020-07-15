@@ -9,9 +9,10 @@ const booksRoute = require('./routes/books');
 const PORT = process.env.PORT || 3000;
 
 //middlewares
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cors())
+
 
 //create a logger
 const logger = winston.createLogger({
