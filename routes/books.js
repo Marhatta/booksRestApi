@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Book, validateBook } = require("../models/books");
 const authenticate = require("../middlewares/authenticate");
+const { isAdmin } = require("../middlewares/authorize");
 
 //POST: CREATE A NEW BOOK
 router.post("/", async (req, res) => {
@@ -28,7 +29,7 @@ router.post("/", async (req, res) => {
 });
 
 //GET ALL BOOKS
-router.get("/", [authenticate], (req, res) => {
+router.get("/", [authenticate, isAdmin], (req, res) => {
   Book.find()
     .then((books) => res.send(books))
     .catch((error) => {
@@ -63,7 +64,7 @@ router.put("/:bookId", async (req, res) => {
 });
 
 //DELETE BOOK BASED ON ID
-router.delete("/:bookId", async (req, res) => {
+router.delete("/:bookId",isAdmin, async (req, res) => {
   const book = await Book.findByIdAndRemove(req.params.bookId);
   if (!book) res.status(404).send("book with id not found");
   res.send(book);

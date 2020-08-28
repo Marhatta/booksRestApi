@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const SALT_ROUNDS = 12;
@@ -16,7 +17,13 @@ router.post("/", (req, res) => {
 
     let userCreated = await newUser.save();
     if (!userCreated) res.status(500).send("Could not create user");
-    res.send(userCreated);
+
+    //create Json Web Token
+    let jwtToken = jwt.sign(
+      { name: req.body.name, email: req.body.email },
+      "secret"
+    );
+    res.status(200).send({ userCreated: true, token: jwtToken });
   });
 });
 
