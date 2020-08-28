@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Book, validateBook } = require("../models/books");
+const authenticate = require("../middlewares/authenticate");
 
 //POST: CREATE A NEW BOOK
 router.post("/", async (req, res) => {
@@ -27,7 +28,7 @@ router.post("/", async (req, res) => {
 });
 
 //GET ALL BOOKS
-router.get("/", (req, res) => {
+router.get("/", [authenticate], (req, res) => {
   Book.find()
     .then((books) => res.send(books))
     .catch((error) => {
