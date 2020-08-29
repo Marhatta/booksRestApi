@@ -4,6 +4,7 @@ const winston = require('winston');
 const app = express();
 require("dotenv").config();
 const booksRoute = require('./routes/books');
+const usersRoute = require('./routes/users');
 
 const PORT = process.env.PORT || 3000;
 
@@ -30,6 +31,7 @@ const logger = winston.createLogger({
 
 //routes
 app.use('/api/books',booksRoute);
+app.use('/api/users',usersRoute);
 
 
 //connect to mongodb atlas
